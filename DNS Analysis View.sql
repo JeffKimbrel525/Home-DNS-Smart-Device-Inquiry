@@ -123,8 +123,8 @@ order by count(id) desc
 
 
 
-/* This 3D printer talks to multiple Chinese cloud vendors with servers located in the US
- * China and Japan regularly without any user interaction:
+/* This 3D printer regularly communicates with multiple Chinese cloud services
+ * — including servers physically located in China and Japan — without any user interaction:
  * Alibaba Cloud			File/object storage
  * Flashforge sz3dp.com		Device control, cloud print, firmware updates
  * Qiniu Cloud				Video/camera streaming
@@ -148,13 +148,6 @@ order by date,
 	count(id) desc
 ;
 
-/* The flashforge printer maintains persistent background communication with four cloud platforms operated
- * by Chinese technology companies.  This traffic occurs continuously without user internaction and was
- * undisclosed in the product documentation.  Queries follow a distrubuted pattern across all four vendors
- * Alibaba Cloud for file storage, Flashforge/sz3dp.com for device control and firmware updates, Qiniu for
- * video streaming infrastructure, and NetEase Yunxin for real-time messaging and analytics. This establishes
- * a clear behavioral baseline against which anomalous activity can be measured.
- */
 
 
 
@@ -168,10 +161,6 @@ where date_time::date = '2026-04-06'
     and friendly_name = '3D-Printer'
     and domain = 'api.voxelshare.com'
 ;
-/* 1863 of these queries to api.voxelshare.com happen between 4:08pm and 7:27pm,
- * 1942 of them between 1:39pm and 7:27pm on April 6th. There are only 13 other
- * queries to this domain in the entirety of the dataset, all on April 5th.
- */
 
 
 select 
@@ -225,7 +214,10 @@ order by session_num
 ;
 
 
-/* Breakdown:
+/* 1863 of these queries to api.voxelshare.com happen between 4:08pm and 7:27pm,
+ * 1942 of them between 1:39pm and 7:27pm on April 6th. There are only 13 other
+ * queries to this domain in the entirety of the dataset, those occured on April 5th.
+ * Breakdown:
  * 1:39–1:40pm — 19 rapid queries in about 40 seconds, then silence for 26 minutes.
  *  Possibly an initial handshake or authentication attempt.
  * 
@@ -240,24 +232,18 @@ order by session_num
  *  From here it's relentless at roughly 8–11 seconds between queries all the way to 7:27pm
  * 
  * after 7:27 pm, no further queries to this domain in the rest of the dataset
- */
-
-/* DNS logs recorded 1,942 queries to api.voxelshare.com beginning on 4/6. The device owner was not home, had not
- * installed any new software, and was not interacting with the printer. No user-initiated explanation for this activity 
- * exists. This behavior was invisible to the homeowner until DNS log analysis was performed
+ *
+ * The device owner was not home, had not installed any new software, and was not interacting
+ *  with the printer. No user-initiated explanation for this activity exists. This behavior
+ *  was invisible to the homeowner until DNS log analysis was performed
  * 
  * What api.voxelshare.com Is:
  * VoxelShare / FlashCloud is Flashforge's integrated cloud platform that enables cloud-based management and control
  *  of 3D printers, cloud-based uploading and storage of print files, and social sharing functionality
  * 
- * further research found the following
- * Flashforge's terms explicitly state that by using their services, you "acknowledge and expressly consent that
- * Flashforge may collect, use, process, analyze, review, store, transmit, and disclose account, device, network,
- * and job-related data," including cross-border transfers
- * Cross-border transfers" is the polite legal term for "your data goes to China."
  */
 
--- I'm going to map all the locations this printer is talking to.
+-- Retrieve all domains contacted by the 3D printer for GeoIP lookup and geographic mapping
 select domain,
 	count(id) as num_queries
 from iot_data
@@ -265,6 +251,13 @@ where friendly_name = '3D-Printer'
 group by domain
 order by num_queries desc
 ;
+
+/* External Research:
+ * Flashforge's terms explicitly state that by using their services, you "acknowledge and expressly consent that
+ * Flashforge may collect, use, process, analyze, review, store, transmit, and disclose account, device, network,
+ * and job-related data," including Cross-border transfers
+ * "Cross-border transfers" is the polite legal term for "your data goes to China."
+ */
 
 
 -- top 5 devices for chattiness
