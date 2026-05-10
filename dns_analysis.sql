@@ -59,7 +59,7 @@ order by dow,
 ;
 
 -- Looking at device statistics
-with cte as (
+with daily_counts as (
 	select friendly_name as device,
 		date_time::date as date,
 		count(id) as num_queries
@@ -67,32 +67,32 @@ with cte as (
 	group by friendly_name,
 		date_time::date
 ),
-cte2 as (
-select cte.device,
-	count(distinct cte.date) as num_days,
-	max(cte.num_queries) as max_queries,
-	min(cte.num_queries) as min_queries,
-	sum(cte.num_queries) as total_queries,
-	round(stddev(cte.num_queries),2) as std_dev	 
-from cte
-group by cte.device
+device_aggregates as (
+	select daily_counts.device,
+		count(distinct daily_counts.date) as num_days,
+		max(daily_counts.num_queries) as max_queries,
+		min(daily_counts.num_queries) as min_queries,
+		sum(daily_counts.num_queries) as total_queries,
+		round(stddev(daily_counts.num_queries),2) as std_dev	 
+	from daily_counts
+	group by daily_counts.device
 )
-select cte2.device,
-	cte2.num_days as days_online,
-	percentile_cont(0.5) WITHIN GROUP (ORDER BY cte.num_queries) AS median_daily_queries,
-	cte2.max_queries,
-	cte2.min_queries,
-	cte2.total_queries,
-	cte2.std_dev,
-	round((cte2.std_dev / (percentile_cont(0.5) WITHIN GROUP (ORDER BY cte.num_queries)) * 100)::numeric,2) as cv
-from cte2
-join cte on cte.device = cte2.device
-group by cte2.device,
-	cte2.num_days, 
-	cte2.max_queries,
-	cte2.min_queries,
-	cte2.total_queries,
-	cte2.std_dev
+select device_aggregates.device,
+	device_aggregates.num_days as days_online,
+	percentile_cont(0.5) WITHIN GROUP (ORDER BY daily_counts.num_queries) AS median_daily_queries,
+	device_aggregates.max_queries,
+	device_aggregates.min_queries,
+	device_aggregates.total_queries,
+	device_aggregates.std_dev,
+	round((device_aggregates.std_dev / (percentile_cont(0.5) WITHIN GROUP (ORDER BY daily_counts.num_queries)) * 100)::numeric,2) as cv
+from device_aggregates
+join daily_counts on daily_counts.device = device_aggregates.device
+group by device_aggregates.device,
+	device_aggregates.num_days, 
+	device_aggregates.max_queries,
+	device_aggregates.min_queries,
+	device_aggregates.total_queries,
+	device_aggregates.std_dev
 order by total_queries desc
 ;
 
@@ -158,7 +158,7 @@ order by count(id) desc
  *  in a way nothing else on the network would have.
  */
 
--- api.voxelshare.com only shows up on 2 seperate days in the entire dataset
+-- api.voxelshare.com only shows up on 2 separate days in the entire dataset
 select 
     min(date_time) as first_ping,
     max(date_time) as last_ping,
@@ -257,6 +257,7 @@ group by day,
 	hour
 order by day,
 	hour
+;
 
 -- extending smart plug search beyond the 8-week dataset to establish pre-disconnection baseline.
 select (to_timestamp(dl.timestamp)at time zone 'America/Chicago')::date as date,
@@ -333,7 +334,7 @@ select date_time::date as day,
 	extract(hour from date_time) as hour,
 	count(id) as num_queries
 from iot_data
-where friendly_name = 'GarageDoorOpener'
+where friendly_name = 'Garage Door Opener'
 group by day,
 	hour
 having count(id) > 10
