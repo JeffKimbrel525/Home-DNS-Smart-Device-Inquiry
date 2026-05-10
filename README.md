@@ -15,8 +15,19 @@ development of a resource-efficient detection system.
 - **PostgreSQL** — data storage and querying
 - **Python** (Pandas, Seaborn, Plotly, Folium, SciPy) — analysis and visualization
 - **Tableau** — interactive dashboard
-- **Pi-hole** — DNS server and data source
 - **MaxMind GeoLite2** — IP geolocation
+
+## Infrastructure
+All data collection infrastructure was self-hosted and configured from scratch:
+- **Proxmox** host running containerized services
+- **Pi-hole** — DNS/DHCP server and primary data source, configured to log all 
+  queries to PostgreSQL hourly with gap-tolerant ingestion
+- **PostgreSQL** — database server storing and serving all DNS log data
+- **Device Identification** — all 21 IoT devices manually identified and labeled 
+  through network investigation
+
+This project covers the full pipeline from raw DNS log collection through analysis 
+and visualization — not just the analytical layer.
 
 ## Key Findings
 - **3D Printer** — 1,942 queries to a single unknown domain (api.voxelshare.com) 
@@ -42,4 +53,4 @@ development of a resource-efficient detection system.
 - `DNS Analysis.sql` — investigative SQL queries and findings
 
 ## Interactive Notebook
-[View with interactive maps on nbviewer]()
+[View with interactive maps on nbviewer](Link will be added soon)
