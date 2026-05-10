@@ -51,6 +51,7 @@ and visualization — not just the analytical layer.
 ## Files
 - `DNS Analysis.ipynb` — full analysis notebook
 - `DNS Analysis.sql` — investigative SQL queries and findings
+- CSV export of the IoT_data view available on request.
 
 ## Interactive Notebook
 [View with interactive maps on nbviewer](Link will be added soon)
