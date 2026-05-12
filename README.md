@@ -57,5 +57,4 @@ and visualization — not just the analytical layer.
 [View the Tableau Dashboard here](https://public.tableau.com/app/profile/jeff.kimbrel/viz/DNSAnalysis_17784659035450/Sheet9) *(Story/Dashboard work in progress)*
 
 
-## Interactive Notebook
-[View with interactive maps on nbviewer](Link will be added soon)
+
