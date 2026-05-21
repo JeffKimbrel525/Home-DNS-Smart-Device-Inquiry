@@ -15,7 +15,7 @@ development of a resource-efficient detection system.
 - **PostgreSQL** — data storage and querying
 - **Python** (Pandas, Seaborn, Plotly, Folium, SciPy) — analysis and visualization
 - **MaxMind GeoLite2** — IP geolocation
-- - **Tableau** — interactive dashboard
+- **Tableau** — interactive dashboard
 
 
 ## Infrastructure
