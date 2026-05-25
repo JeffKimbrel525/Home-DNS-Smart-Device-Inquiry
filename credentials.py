@@ -1,3 +1,10 @@
+# postgres.txt should be formatted as:
+# username=your_username
+# password=your_password
+# port=5432
+# database=your_database
+
+
 #Create function to extract credentials
 def read_credentials(file_path):
     credentials ={}  #create a dictionary==
