@@ -56,5 +56,4 @@ and visualization — not just the analytical layer.
 - CSV export of the IoT_data view available on request.
 
 - ## Visualizations
-- [View the Tableau Dashboard here](https://public.tableau.com/app/profile/jeff.kimbrel/viz/DNSAnalysis_17784659035450/DNSAnalysis) *(Story/Dashboards)*
-                                    
+[![Tableau Dashboard](WorldMap.png)](https://public.tableau.com/app/profile/jeff.kimbrel/viz/DNSAnalysis_17784659035450/DNSAnalysis)
