@@ -50,6 +50,8 @@ and visualization — not just the analytical layer.
 
 ## Files
 - `DNS Analysis.ipynb` — full analysis notebook
+- 'credentials.py' — template for database credentials (supply your own credentials file)
+- `table_creation.sql` — database schema, table setup, and seed data
 - `DNS Analysis.sql` — investigative SQL queries and findings
 - CSV export of the IoT_data view available on request.
 
