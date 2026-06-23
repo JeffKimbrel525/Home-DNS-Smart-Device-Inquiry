@@ -259,7 +259,7 @@ order by date, hour
 ;
 
 /* The smart plug was connected on 4/23 and since then has been sending a query approximately every
- * 5 seconds.  When it was last connected, it sent between 2 and 10 queries per day.  I'm trying to keep
+ * 5 seconds.  When it was last connected, it sent between 2 and 16 queries per day.  I'm trying to keep
  * all my findings and data as information I can find within the DNS records but I had to find the
  * explanation for this externally.  It's a Wemo smart plug and a quick web search found that Wemo is
  *  owned by Belkin and that Belkin has discontinued Wemo cloud services and app support for many
